@@ -1,4 +1,4 @@
-# vue_learn
+# Mongo - Node (Express) - Vue Fullstack Shopping Cart App 
 
 ## Project setup
 ```
