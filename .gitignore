@@ -10,5 +10,6 @@ docs/_book
 test/
 
 frontend/node_modules
+backend/node_modules
 .idea
 frontend/.idea
