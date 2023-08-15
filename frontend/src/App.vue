@@ -1,6 +1,6 @@
 <template>
 <!--  <HelloWorld msg="Welcome to Your Vue.js App, yo!"/>-->
-  <h1>Olive Oil, Inc.</h1>
+  <NavBar/>
   <div class="page-wrap">
     <router-view></router-view>
   </div>
@@ -8,10 +8,13 @@
 
 <script>
 // import HelloWorld from './components/HelloWorld.vue'
+import NavBar from "@/components/NavBar.vue";
 
 export default {
   name: 'App',
-  components: {}
+  components: {
+    NavBar,
+  }
 };
 
 </script>
