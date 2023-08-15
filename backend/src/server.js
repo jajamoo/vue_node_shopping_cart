@@ -11,8 +11,12 @@ app.use(express.json());
 
 
 
-function populateCartIds(ids){
-   return ids.map(id => products.find(product => product.id === id));
+async function populateCartIds(ids){
+   // return ids.map(id => products.find(product => product.id === id));
+
+    await client.connect();
+    const db = client.db('fsv-db');
+   return Promise.all(ids.map(id => db.collection('products').findOne({ id })));
 
 }
 app.get('/hello', async (req, res) => {
@@ -25,8 +29,12 @@ app.get('/hello', async (req, res) => {
 
 });
 
-app.get('/products', (req, res) => {
-    res.json(products);
+app.get('/products', async (req, res) => {
+    // res.json(products);
+    await client.connect();
+    const db = client.db('fsv-db');
+    const products = await db.collection('products').find({}).toArray();
+    res.send(products);
 });
 
 //this is for the "normal" cart items array in the temp-data.js file
@@ -34,9 +42,21 @@ app.get('/products', (req, res) => {
 //     res.json(cartItems);
 // });
 
-app.get('/cart', (req, res) => {
-    const populatedCart = cartItems.map(id => products.find(product => product.id === id));
-    res.json(populatedCart);populateCartIds(cartItems)
+app.get('/users/:userId/cart', async (req, res) => {
+    // const populatedCart = cartItems.map(id => products.find(product => product.id === id));
+    // res.json(populatedCart);populateCartIds(cartItems)
+    const user = await client.connect();
+    const db = client.db('fsv-db');
+    const users = await db.collection('users').findOne({
+        id: req.params.userId
+    });
+    const populatedCart = await populateCartIds(users.cartItems);
+
+    res.json(populatedCart);
+
+
+
+
 });
 app.get('/products/:productId', (req, res) => {
     const productId = req.params.productId;
