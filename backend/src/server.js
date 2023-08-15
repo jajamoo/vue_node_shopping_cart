@@ -6,6 +6,10 @@ let products = productsRaw;
 const app = express()
 app.use(express.json())
 
+function populateCartIds(ids){
+   return ids.map(id => products.find(product => product.id === id));
+
+}
 app.get('/hello', (req, res) => {
     res.send('Sup Nerd!');
 
@@ -15,8 +19,14 @@ app.get('/products', (req, res) => {
     res.json(products);
 });
 
+//this is for the "normal" cart items array in the temp-data.js file
+// app.get('/cart', (req, res) => {
+//     res.json(cartItems);
+// });
+
 app.get('/cart', (req, res) => {
-    res.json(cartItems);
+    const populatedCart = cartItems.map(id => products.find(product => product.id === id));
+    res.json(populatedCart);populateCartIds(cartItems)
 });
 app.get('/products/:productId', (req, res) => {
     const productId = req.params.productId;
@@ -28,19 +38,20 @@ app.get('/products/:productId', (req, res) => {
 
 app.post('/cart', (req, res) => {
     const productId = req.body.id;
-    const product = products.find(
-        product => product.id === productId
-    );
-    cartItems.push(product);
-
-    res.json(cartItems);
+    // const product = products.find(
+    //     product => product.id === productId
+    // );
+    cartItems.push(productId);
+    const populatedCart = populateCartIds(cartItems)
+    res.json(populatedCart);
 });
 
 app.delete('/cart/:productId', (req, res) => {
     const productId = req.params.productId;
 
-    cartItems = cartItems.filter(product => product.id !== productId);
-    res.json(cartItems);
+    cartItems = cartItems.filter(id => id !== productId);
+    const populatedCart = populateCartIds(cartItems)
+    res.json(populatedCart);
 });
 
 app.listen(8000, () => {
