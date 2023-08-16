@@ -18,7 +18,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Event created</h5>
+          <h5 class="modal-title" id="exampleModalLabel">Shopping Cart</h5>
         </div>
         <div class="modal-body"> Item added to cart! </div>
       </div>
