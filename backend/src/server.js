@@ -63,13 +63,25 @@ async function start() {
         res.json(product);
     });
 
-    app.post('/cart', (req, res) => {
+    app.post('/users/:userId/cart', async (req, res) => {
         const productId = req.body.id;
+        const userId = req.params.userId;
+
         // const product = products.find(
         //     product => product.id === productId
         // );
-        cartItems.push(productId);
-        const populatedCart = populateCartIds(cartItems)
+
+        await db.collection('users').updateOne({id: userId}, {
+            //no duplicates (vs $push, which doesn't account for duplicates)
+            $addToSet: {cartItems: productId}
+        });
+
+        // cartItems.push(productId);
+        const user = await db.collection('users').findOne({
+            id: req.params.userId
+        });
+        const populatedCart = await populateCartIds(user.cartItems);
+
         res.json(populatedCart);
     });
 
