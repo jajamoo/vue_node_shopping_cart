@@ -1,5 +1,6 @@
 import express from 'express'
 import {MongoClient} from "mongodb";
+import path from 'path';
 
 async function start() {
 
@@ -11,6 +12,8 @@ async function start() {
     const db = client.db('fsv-db');
 
     app.use(express.json());
+
+    app.use('/images', express.static(path.join(__dirname, '../assets')));
 
     async function populateCartIds(ids) {
         // return ids.map(id => products.find(product => product.id === id));

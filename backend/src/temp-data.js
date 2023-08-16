@@ -61,7 +61,7 @@ export const products = [{
     id: '789',
     name: 'Medium',
     price: '$24.50',
-    imageUrl: '/images/medium-.webp',
+    imageUrl: '/images/medium-bottle.webp',
 }, {
     id: '890',
     name: 'Bold',
