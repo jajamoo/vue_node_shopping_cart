@@ -7,6 +7,10 @@ import ProductsPage from "@/pages/ProductsPage.vue";
 import ProductDetailPage from "@/pages/ProductDetailPage.vue";
 import NotFoundPage from "@/pages/NotFoundPage.vue";
 
+// Import Bootstrap and BootstrapVue CSS files (order is important)
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
+
 createApp(App)
     .use(VueRouter.createRouter({
         history: VueRouter.createWebHistory(process.env.BASE_URL),
