@@ -1,6 +1,11 @@
 # Mongo - Node (Express) - Vue Fullstack Shopping Cart App 
 
-## Project setup
+## Fullstack shopping cart application
+
+### Live application can be found here :[Deployed on Render](https://olive-oil-vue.onrender.com/products)
+
+## Project setup for local deployment:
+
 ```
 cd frontend
 npm install

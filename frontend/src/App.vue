@@ -27,6 +27,7 @@ export default {
     onAuthStateChanged(auth, user => {
       this.user = user;
     });
+    document.title = "Two Trees Olive Oil";
   }
 };
 
