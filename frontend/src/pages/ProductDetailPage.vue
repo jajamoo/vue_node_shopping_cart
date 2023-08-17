@@ -6,7 +6,9 @@
     <div class="product-details">
       <h1> {{ product.name }} </h1>
       <h3 class="price"> {{ product.price }}</h3>
-      <button @click="addToCart" class="add-to-cart">Add to cart</button>
+      <button @click="addToCart" class="add-to-cart" v-if="!itemIsInCart">Add to cart</button>
+<!--      <button @click="addToCart" class="add-to-cart" v-if="!checkCart(product.id)">Add to cart</button>-->
+      <button class="grey-button" v-if="itemIsInCart">Item is already in cart</button>
     </div>
   </div>
   <div v-else>
@@ -20,38 +22,52 @@
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel">Shopping Cart</h5>
         </div>
-        <div class="modal-body"> Item added to cart! </div>
+        <div class="modal-body"> Item added to cart!</div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-// import {products} from "@/temp-data";
 import NotFoundPage from '@/pages/NotFoundPage.vue'
 import axios from "axios";
-import {Modal} from 'bootstrap'
+import {Modal} from 'bootstrap';
+
 
 export default {
   name: "ProductDetailPage",
   components: {NotFoundPage},
+
   data() {
     return {
       product: [],
+      cartItems: [],
       cartModal: null,
     }
   },
+  computed: {
+    itemIsInCart() {
+      return this.cartItems.some(item => item.id === this.$route.params.productId);
+    }
+  },
   methods: {
-    async addToCart () {
+    async addToCart() {
       await axios.post('/api/users/12345/cart', {
         id: this.$route.params.productId
-      }).then(response =>{
+      }).then(response => {
         console.log(response.data);
         this.showUniqueModal();
+      }).catch(error => {
+        console.log(error);
       });
     },
+
+    //this way also works -- pass into a method instead of a computed property
+    // checkCart(productId) {
+    //   return this.cartItems.some(item => item.id === productId);
+    // },
     showUniqueModal() {
-      this.cartModal = new Modal(document.getElementById("exampleModal"),{ keyboard: false });
+      this.cartModal = new Modal(document.getElementById("exampleModal"), {keyboard: false});
       this.cartModal.show();
     },
     closeUniqueModal() {
@@ -60,9 +76,11 @@ export default {
   },
   async created() {
     const response = await axios.get(`/api/products/${this.$route.params.productId}`);
-    const product = response.data;
+    this.product = response.data;
 
-    this.product = product;
+    const cartResponse = await axios.get('/api/users/12345/cart');
+    this.cartItems = cartResponse.data;
+
   }
 }
 </script>
