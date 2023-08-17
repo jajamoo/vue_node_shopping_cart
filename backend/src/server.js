@@ -46,7 +46,9 @@ async function start() {
         const users = await db.collection('users').findOne({
             id: req.params.userId
         });
-        const populatedCart = await populateCartIds(users.cartItems);
+
+
+        const populatedCart = await populateCartIds(users?.cartItems || []);
 
         res.json(populatedCart);
     });
@@ -95,7 +97,7 @@ async function start() {
         const user = await db.collection('users').findOne({
             id: req.params.userId
         });
-        const populatedCart = await populateCartIds(user.cartItems);
+        const populatedCart = await populateCartIds(user?.cartItems || []);
 
         res.json(populatedCart);
     }
