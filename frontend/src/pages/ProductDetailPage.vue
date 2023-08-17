@@ -7,6 +7,7 @@
       <h1> {{ product.name }} </h1>
       <h3 class="price"> {{ product.price }}</h3>
       <button @click="addToCart" class="add-to-cart" v-if="!itemIsInCart">Add to cart</button>
+      <button class="sign-in" @click="signIn">Sign in to add to cart</button>
 <!--      <button @click="addToCart" class="add-to-cart" v-if="!checkCart(product.id)">Add to cart</button>-->
       <button class="grey-button" v-if="itemIsInCart">Item is already in cart</button>
     </div>
@@ -32,6 +33,7 @@
 import NotFoundPage from '@/pages/NotFoundPage.vue'
 import axios from "axios";
 import {Modal} from 'bootstrap';
+import {getAuth, sendSignInLinkToEmail, isSignInWithEmailLink, signInWithEmailLink} from 'firebase/auth'
 
 
 export default {
@@ -62,6 +64,21 @@ export default {
       });
     },
 
+    async signIn() {
+      const email = prompt('Please enter email to sign in: ');
+      const auth = getAuth();
+
+      const actionCodeSettings = {
+        url: `https://localhost:8080/products/${this.$route.params.productId}`,
+        handleCodeInApp: true,
+      };
+
+      await sendSignInLinkToEmail(auth, email, actionCodeSettings);
+
+      alert('A login link was sent to the email you provided');
+      window.localStorage.setItem('emailForSignIn', email);
+    },
+
     //this way also works -- pass into a method instead of a computed property
     // checkCart(productId) {
     //   return this.cartItems.some(item => item.id === productId);
@@ -75,6 +92,16 @@ export default {
     },
   },
   async created() {
+    const auth = getAuth();
+    if (isSignInWithEmailLink(auth, window.location.href)) {
+      const email = window.localStorage.getItem('emailForSignIn');
+      await signInWithEmailLink(auth, email, window.location. href);
+
+      alert('Successfully Signed In!');
+
+      window.localStorage.removeItem('emailForSignIn');
+    }
+
     const response = await axios.get(`/api/products/${this.$route.params.productId}`);
     this.product = response.data;
 
