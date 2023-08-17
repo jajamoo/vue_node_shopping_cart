@@ -14,6 +14,7 @@ async function start() {
     app.use(express.json());
 
     app.use('/images', express.static(path.join(__dirname, '../assets')));
+
     app.use(express.static(
         path.resolve(__dirname, '../dist'),
         { maxAge: '1y', etag: false}
@@ -118,8 +119,8 @@ async function start() {
     const port = process.env.PORT || 8000;
 
     app.listen(8000, () => {
-        console.log('Server listening on Port ' + 8000);
+        console.log('Server listening on port: ' + port);
     });
 }
 
-start()
+start();
