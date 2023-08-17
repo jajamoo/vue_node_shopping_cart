@@ -31,17 +31,13 @@ export default {
   methods: {
     async removeFromCart(productId) {
       const response = await axios.delete(`/api/users/${this.user.uid}/cart/${productId}`);
-      const updatedCart = response.data;
-
-      this.cartItems = updatedCart;
+      this.cartItems = response.data;
     }
   },
   async created() {
     if (this.user) {
       const response = await axios.get(`/api/users/${this.user.uid}/cart`);
-      const cartItems = response.data;
-
-      this.cartItems = cartItems;
+      this.cartItems = response.data;
     }
   },
 

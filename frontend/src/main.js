@@ -11,7 +11,7 @@ import NotFoundPage from "@/pages/NotFoundPage.vue";
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
 
-import { initializeApp } from "firebase/app";
+import {initializeApp} from "firebase/app";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -37,9 +37,12 @@ createApp(App)
             component: ProductsPage
         }, {
             path: '/products/:productId',
-            component:ProductDetailPage
+            component: ProductDetailPage
         }, {
-            path:'/:pathMatch(.*)*',
+            path: '/',
+            redirect: '/products'
+        }, {
+            path: '/:pathMatch(.*)*',
             component: NotFoundPage
         }]
     }))

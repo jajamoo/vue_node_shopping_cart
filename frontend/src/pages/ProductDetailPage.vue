@@ -79,7 +79,8 @@ export default {
       const auth = getAuth();
 
       const actionCodeSettings = {
-        url: `https://localhost:8080/products/${this.$route.params.productId}`,
+        // url: `https://localhost:8080/products/${this.$route.params.productId}`,
+        url: `https://olive-oil-vue.onrender.com/products/${this.$route.params.productId}`,
         handleCodeInApp: true,
       };
 
