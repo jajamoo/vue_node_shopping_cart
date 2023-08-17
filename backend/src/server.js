@@ -73,6 +73,11 @@ async function start() {
         //     product => product.id === productId
         // );
 
+        const existingUser = await db.collection('users').findOne({id: userId});
+        if (!existingUser) {
+            await db.collection('users').insertOne({id: userId, cartItems: [] });
+        }
+
         await db.collection('users').updateOne({id: userId}, {
             //no duplicates (vs $push, which doesn't account for duplicates)
             $addToSet: {cartItems: productId}
