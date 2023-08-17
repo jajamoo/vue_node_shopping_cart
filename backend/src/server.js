@@ -5,7 +5,8 @@ import path from 'path';
 async function start() {
 
     const app = express();
-    const url = `mongodb+srv://jajamoo:Praspras_1984@moe.x8xthy9.mongodb.net/?retryWrites=true&w=majority`
+    // const url = `mongodb+srv://jajamoo:Praspras_1984@moe.x8xthy9.mongodb.net/?retryWrites=true&w=majority`
+    const url = `mongodb://jajamoo:Praspras_1984@ac-viyngda-shard-00-00.x8xthy9.mongodb.net:27017,ac-viyngda-shard-00-01.x8xthy9.mongodb.net:27017,ac-viyngda-shard-00-02.x8xthy9.mongodb.net:27017/?replicaSet=atlas-g8nb2q-shard-0&ssl=true&authSource=admin`
     const client = new MongoClient(url);
 
     await client.connect();
